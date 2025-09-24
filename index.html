@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Student Hub - Complete DigiPortfolio System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'bounce-slow': 'bounce 2s infinite',
+                        'gradient': 'gradient 15s ease infinite',
+                        'slideIn': 'slideIn 0.5s ease-out',
+                        'fadeIn': 'fadeIn 0.3s ease-in',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        gradient: {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            },
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateX(100%)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 min-h-screen font-inter overflow-x-hidden">
+    <!-- Animated Background -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float"></div>
+        <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style="animation-delay: 2s;"></div>
+        <div class="absolute top-40 left-40 w-80 h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style="animation-delay: 4s;"></div>
+    </div>
+
+    <!-- Navigation Header -->
+    <nav class="relative z-10 bg-white/10 backdrop-blur-lg border-b border-white/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-gradient-to-r from-blue-400 to-purple-500 rounded-xl flex items-center justify-center">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-black text-white">Smart Student Hub</h1>
+                        <p class="text-sm text-blue-200 font-medium">Complete DigiPortfolio System 🚀</p>
+                    </div>
+                </div>
+                <div class="flex space-x-4">
+                    <button id="showLogin" class="text-white hover:text-blue-200 font-semibold px-4 py-2 rounded-lg transition-all duration-300 hover:bg-white/10">Login</button>
+                    <button id="showSignup" class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg">Join Revolution</button>
+                    <button id="logoutBtn" class="hidden bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-300">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Toast Notification System -->
+    <div id="toastContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <!-- Hero Section -->
+    <div id="heroSection" class="relative z-10 text-center py-16 px-4">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-5xl md:text-7xl font-black text-white mb-6 leading-tight">
+                The Future of 
+                <span class="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-gradient">
+                    Digital Portfolios
+                </span>
+            </h1>
+            <p class="text-xl md:text-2xl text-blue-100 mb-8 font-medium">
+                Empowering Students & Faculty with AI-Powered Portfolio Management
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <div class="bg-white/20 backdrop-blur-lg rounded-full px-6 py-3 text-white font-semibold">
+                    🎓 Smart Analytics
+                </div>
+                <div class="bg-white/20 backdrop-blur-lg rounded-full px-6 py-3 text-white font-semibold">
+                    🤖 AI Recommendations
+                </div>
+                <div class="bg-white/20 backdrop-blur-lg rounded-full px-6 py-3 text-white font-semibold">
+                    📊 Real-time Insights
+                </div>
+                <div class="bg-white/20 backdrop-blur-lg rounded-full px-6 py-3 text-white font-semibold">
+                    🌟 Career Guidance
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Stories Ticker -->
+    <div id="successTicker" class="relative z-10 bg-gradient-to-r from-green-400 to-blue-500 py-3 overflow-hidden">
+        <div class="animate-pulse text-center">
+            <p class="text-white font-bold">🏆 Join 50,000+ Students & 5,000+ Faculty Already Transforming Their Careers!</p>
+        </div>
+    </div>
+
+    <!-- Authentication Forms Container -->
+    <div id="authContainer" class="relative z-10 flex items-center justify-center min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8">
+            
+            <!-- Signup Form -->
+            <div id="signupForm" class="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20">
+                <div class="text-center mb-8">
+                    <div class="w-20 h-20 bg-gradient-to-r from-blue-400 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-slow">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-3xl font-black text-white mb-2">Join the Revolution</h2>
+                    <p class="text-blue-200 font-medium">Create your digital portfolio in 60 seconds</p>
+                </div>
+
+                <form id="signup" class="space-y-6">
+                    <!-- Full Name -->
+                    <div class="group">
+                        <label for="fullName" class="block text-sm font-semibold text-white mb-2">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" required
+                            class="w-full px-4 py-4 bg-white/20 backdrop-blur-lg border border-white/30 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all text-white placeholder-white/70 font-medium"
+                            placeholder="Enter your full name">
+                        <p id="fullNameError" class="text-red-300 text-sm mt-2 hidden font-medium"></p>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="group">
+                        <label for="signupEmail" class="block text-sm font-semibold text-white mb-2">Email Address</label>
+                        <input type="email" id="signupEmail" name="email" required
+                            class="w-full px-4 py-4 bg-white/20 backdrop-blur-lg border border-white/30 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all text-white placeholder-white/70 font-medium"
+                            placeholder="Enter your email">
+                        <p id="signupEmailError" class="text-red-300 text-sm mt-2 hidden font-medium"></p>
+                    </div>
+
+                    <!-- Role with Enhanced Options -->
+                    <div class="group">
+                        <label for="role" class="block text-sm font-semibold text-white mb-2">Choose Your Journey</label>
+                        <select id="role" name="role" required
+                            class="w-full px-4 py-4 bg-white/20 backdrop-blur-lg border border-white/30 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all text-white font-medium">
+                            <option value="" class="text-gray-800">Select your role</option>
+                            <option value="student" class="text-gray-800">🎓 Student - Build Your Future</option>
+                            <option value="faculty" class="text-gray-800">👨‍🏫 Faculty - Guide & Mentor</option>
+                            <option value="admin" class="text-gray-800">⚡ Admin - System Manager</option>
+                        </select>
+                        <p id="roleError" class="text-red-300 text-sm mt-2 hidden font-medium"></p>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="group">
+                        <label for="signupPassword" class="block text-sm font-semibold text-white mb-2">Create Password</label>
+                        <div class="relative">
+                            <input type="password" id="signupPassword" name="password" required
+                                class="w-full px-4 py-4 pr-12 bg-white/20 backdrop-blur-lg border border-white/30 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all text-white placeholder-white/70 font-medium"
+                                placeholder="Create a strong password">
+                            <button type="button" id="toggleSignupPassword" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white/70 hover:text-white transition-colors">
+                                <svg id="signupEyeOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                </svg>
+                                <svg id="signupEyeClosed" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div id="passwordStrength" class="mt-2 hidden">
+                            <div class="flex space-x-1">
+                                <div class="h-2 w-1/4 rounded-full bg-white/20"></div>
+                                <div class="h-2 w-1/4 rounded-full bg-white/20"></div>
+                                <div class="h-2 w-1/4 rounded-full bg-white/20"></div>
+                                <div class="h-2 w-1/4 rounded-full bg-white/20"></div>
+                            </div>
+                            <p id="passwordStrengthText" class="text-xs text-white/70 mt-1"></p>
+                        </div>
+                        <p id="signupPasswordError" class="text-red-300 text-sm mt-2 hidden font-medium"></p>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="group">
+                        <label for="confirmPassword" class="block text-sm font-semibold text-white mb-2">Confirm Password</label>
+                        <div class="relative">
+                            <input type="password" id="confirmPassword" name="confirmPassword" required
+                                class="w-full px-4 py-4 pr-12 bg-white/20 backdrop-blur-lg border border-white/30 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all text-white placeholder-white/70 font-medium"
+                                placeholder="Confirm your password">
+                            <button type="button" id="toggleConfirmPassword" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white/70 hover:text-white transition-colors">
+                                <svg id="confirmEyeOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                </svg>
+                                <svg id="confirmEyeClosed" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <p id="confirmPasswordError" class="text-red-300 text-sm mt-2 hidden font-medium"></p>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 text-white font-black py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-2xl text-lg">
+                        🚀 Launch My Portfolio Journey
+                    </button>
+                </form>
+
+                <div class="mt-8 text-center">
+                    <p class="text-white/80 font-medium">Already revolutionizing your career? 
+                        <button id="switchToLogin" class="text-blue-300 hover:text-blue-100 font-bold underline">Sign in here</button>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm" class="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20 hidden">
+                <div class="text-center mb-8">
+                    <div class="w-20 h-20 bg-gradient-to-r from-green-400 to-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-bounce-slow">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-3xl font-black text-white mb-2">Welcome Back, Innovator!</h2>
+                    <p class="text-blue-200 font-medium">Continue your digital transformation</p>
+                </div>
+
+                <form id="login" class="space-y-6">
+                    <!-- Email -->
+                    <div class="group">
+                        <label for="loginEmail" class="block text-sm font-semibold text-white mb-2">Email Address</label>
+                        <input type="email" id="loginEmail" name="email" required
+                            class="w-full px-4 py-4 bg-white/20 backdrop-blur-lg border border-white/30 rounded-xl focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all text-white placeholder-white/70 font-medium"
+                            placeholder="Enter your email">
+                        <p id="loginEmailError" class="text-red-300 text-sm mt-2 hidden font-medium"></p>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="group">
+                        <label for="loginPassword" class="block text-sm font-semibold text-white mb-2">Password</label>
+                        <div class="relative">
+                            <input type="password" id="loginPassword" name="password" required
+                                class="w-full px-4 py-4 pr-12 bg-white/20 backdrop-blur-lg border border-white/30 rounded-xl focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all text-white placeholder-white/70 font-medium"
+                                placeholder="Enter your password">
+                            <button type="button" id="toggleLoginPassword" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white/70 hover:text-white transition-colors">
+                                <svg id="loginEyeOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                </svg>
+                                <svg id="loginEyeClosed" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <p id="loginPasswordError" class="text-red-300 text-sm mt-2 hidden font-medium"></p>
+                    </div>
+
+                    <!-- Remember Me & Forgot Password -->
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <input id="rememberMe" name="rememberMe" type="checkbox" class="h-5 w-5 text-green-400 focus:ring-green-400 border-white/30 rounded bg-white/20">
+                            <label for="rememberMe" class="ml-3 block text-sm text-white font-medium">Remember me</label>
+                        </div>
+                        <button type="button" id="forgotPassword" class="text-sm text-blue-300 hover:text-blue-100 font-semibold">Forgot password?</button>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="w-full bg-gradient-to-r from-green-500 via-blue-500 to-purple-500 hover:from-green-600 hover:via-blue-600 hover:to-purple-600 text-white font-black py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-2xl text-lg">
+                        ⚡ Access My Dashboard
+                    </button>
+                </form>
+
+                <div class="mt-8 text-center">
+                    <p class="text-white/80 font-medium">New to the revolution? 
+                        <button id="switchToSignup" class="text-blue-300 hover:text-blue-100 font-bold underline">Join us now</button>
+                    </p>
+                </div>
+
+                <!-- Demo Credentials -->
+                <div class="mt-6 p-4 bg-white/10 rounded-xl border border-white/20">
+                    <p class="text-white font-semibold mb-2">🎯 Demo Credentials:</p>
+                    <div class="text-sm text-white/80 space-y-1">
+                        <p><strong>Student:</strong> student@test.com | password123</p>
+                        <p><strong>Faculty:</strong> faculty@test.com | password123</p>
+                        <p><strong>Admin:</strong> admin@test.com | password123</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Container -->
+    <div id="dashboardContainer" class="hidden relative z-10 min-h-screen">
+        <!-- Student Dashboard -->
+        <div id="studentDashboard" class="hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <!-- Dashboard Header -->
+                <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 mb-8 border border-white/20">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h1 class="text-3xl font-black text-white mb-2">Student Dashboard</h1>
+                            <p class="text-blue-200" id="studentWelcome">Welcome back, Student!</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-white" id="studentScore">Portfolio Score: 85%</div>
+                            <div class="text-sm text-blue-200">Last updated: Today</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl p-6 text-white">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-blue-100">Projects</p>
+                                <p class="text-3xl font-bold" id="studentProjects">12</p>
+                            </div>
+                            <div class="text-4xl">📁</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-500 to-blue-600 rounded-xl p-6 text-white">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-green-100">Skills</p>
+                                <p class="text-3xl font-bold" id="studentSkills">8</p>
+                            </div>
+                            <div class="text-4xl">🎯</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl p-6 text-white">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-purple-100">Mentors</p>
+                                <p class="text-3xl font-bold" id="studentMentors">2</p>
+                            </div>
+                            <div class="text-4xl">👨‍🏫</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-orange-500 to-red-600 rounded-xl p-6 text-white">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-orange-100">Achievements</p>
+                                <p class="text-3xl font-bold" id="studentAchievements">5</p>
+                            </div>
+                            <div class="text-4xl">🏆</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Portfolio Management -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <!-- Recent Projects -->
+                        <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-2xl font-bold text-white">Recent Projects</h2>
+                                <button id="addProjectBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold transition-all">+ Add Project</button>
+                            </div>
+                            <div id="projectsList" class="space-y-4">
+                                <!-- Projects will be dynamically loaded here -->
+                            </div>
+                        </div>
+
+                        <!-- Skills Assessment -->
+                        <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                            <h2 class="text-2xl font-bold text-white mb-6">Skills Assessment</h2>
+                            <div id="skillsChart" class="space-y-4">
+                                <!-- Skills will be dynamically loaded here -->
+                            </div>
+                            <button id="assessSkillsBtn" class="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-semibold transition-all">Take Assessment</button>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <div class="space-y-6">
+                        <!-- AI Recommendations -->
+                        <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                            <h3 class="text-xl font-bold text-white mb-4">🤖 AI Recommendations</h3>
+                            <div id="aiRecommendations" class="space-y-3">
+                                <!-- Recommendations will be loaded here -->
+                            </div>
+                        </div>
+
+                        <!-- Mentor Connections -->
+                        <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                            <h3 class="text-xl font-bold text-white mb-4">👨‍🏫 Your Mentors</h3>
+                            <div id="mentorsList" class="space-y-3">
+                                <!-- Mentors will be loaded here -->
+                            </div>
+                            <button id="findMentorBtn" class="mt-4 w-full bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold transition-all">Find Mentor</button>
+                        </div>
+
+                        <!-- Career Progress -->
+                        <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                            <h3 class="text-xl font-bold text-white mb-4">📈 Career Progress</h3>
+                            <div class="space-y-3">
+                                <div class="flex justify-between text-white">
+                                    <span>Profile Completion</span>
+                                    <span>85%</span>
+                                </div>
+                                <div class="w-full bg-white/20 rounded-full h-2">
+                                    <div class="bg-gradient-to-r from-blue-400 to-purple-500 h-2 rounded-full" style="width: 85%"></div>
+                                </div>
+                                <div class="flex justify-between text-white">
+                                    <span>Skill Development</span>
+                                    <span>70%</span>
+                                </div>
+                                <div class="w-full bg-white/20 rounded-full h-2">
+                                    <div class="bg-gradient-to-r from-green-400 to-blue-500 h-2 rounded-full" style="width: 70%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Faculty Dashboard -->
+        <div id="facultyDashboard" class="hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <!-- Dashboard Header -->
+                <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 mb-8 border border-white/20">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h1 class="text-3xl font-black text-white mb-2">Faculty Dashboard</h1>
+                            <p class="text-blue-200" id="facultyWelcome">Welcome back, Professor!</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-white" id="facultyImpact">Impact Score: 92%</div>
+                            <div class="text-sm text-blue-200">Students mentored this month</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-gradient-to-r from-green-500 to-blue-600 rounded-xl p-6 text-white">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-green-100">Students</p>
+                                <p class="text-3xl font-bold" id="facultyStudents">45</p>
+                            </div>
+                            <div class="text-4xl">🎓</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl p-6 text-white">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-blue-100">Assessments</p>
+                                <p class="text-3xl font-bold" id="facultyAssessments">15</p>
+                            </div>
+                            <div class="text-4xl">📊</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl p-6 text-white">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-purple-100">Research</p>
+                                <p class="text-3xl font-bold" id="facultyResearch">8</p>
+                            </div>
+                            <div class="text-4xl">🔬</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-orange-500 to-red-600 rounded-xl p-6 text-white">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-orange-100">Collaborations</p>
+                                <p class="text-3xl font-bold" id="facultyCollabs">12</p>
+                            </div>
+                            <div class="text-4xl">🤝</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Student Management -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <!-- Student Progress Overview -->
+                        <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-2xl font-bold text-white">Student Progress Overview</h2>
+                                <button id="viewAllStudentsBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold transition-all">View All</button>
+                            </div>
+                            <div id="studentProgressList" class="space-y-4">
+                                <!-- Student progress will be dynamically loaded here -->
+                            </div>
+                        </div>
+
+                        <!-- Assessment Management -->
+                        <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-2xl font-bold text-white">Assessment Management</h2>
+                                <button id="createAssessmentBtn" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-semibold transition-all">+ Create Assessment</button>
+                            </div>
+                            <div id="assessmentsList" class="space-y-4">
+                                <!-- Assessments will be dynamically loaded here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <div class="space-y-6">
+                        <!-- Analytics Dashboard -->
+                        <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                            <h3 class="text-xl font-bold text-white mb-4">📊 Analytics</h3>
+                            <div class="space-y-4">
+                                <div class="flex justify-between text-white">
+                                    <span>Student Engagement</span>
+                                    <span class="text-green-400">↑ 15%</span>
+                                </div>
+                                <div class="flex justify-between text-white">
+                                    <span>Portfolio Completion</span>
+                                    <span class="text-blue-400">78%</span>
+                                </div>
+                                <div class="flex justify-between text-white">
+                                    <span>Skill Assessments</span>
+                                    <span class="text-purple-400">↑ 23%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Industry Connections -->
+                        <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                            <h3 class="text-xl font-bold text-white mb-4">🏢 Industry Partners</h3>
+                            <div id="industryPartners" class="space-y-3">
+                                <!-- Industry partners will be loaded here -->
+                            </div>
+                            <button id="connectIndustryBtn" class="mt-4 w-full bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-semibold transition-all">Connect</button>
+                        </div>
+
+                        <!-- Research Publications -->
+                        <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                            <h3 class="text-xl font-bold text-white mb-4">📚 Research</h3>
+                            <div id="researchList" class="space-y-3">
+                                <!-- Research will be loaded here -->
+                            </div>
+                            <button id="addResearchBtn" class="mt-4 w-full bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold transition-all">+ Add Publication</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div id="adminDashboard" class="hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <!-- Dashboard Header -->
+                <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 mb-8 border border-white/20">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h1 class="text-3xl font-black text-white mb-2">Admin Dashboard</h1>
+                            <p class="text-blue-200" id="adminWelcome">System Overview & Management</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-white">System Health: 98%</div>
+                            <div class="text-sm text-blue-200">All systems operational</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl p-6 text-white">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-blue-100">Total Users</p>
+                                <p class="text-3xl font-bold">55,247</p>
+                            </div>
+                            <div class="text-4xl">👥</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-500 to-blue-600 rounded-xl p-6 text-white">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-green-100">Active Today</p>
+                                <p class="text-3xl font-bold">12,456</p>
+                            </div>
+                            <div class="text-4xl">⚡</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl p-6 text-white">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-purple-100">Portfolios</p>
+                                <p class="text-3xl font-bold">48,392</p>
+                            </div>
+                            <div class="text-4xl">📁</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-orange-500 to-red-600 rounded-xl p-6 text-white">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-orange-100">Assessments</p>
+                                <p class="text-3xl font-bold">156,789</p>
+                            </div>
+                            <div class="text-4xl">📊</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Tools -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                        <h2 class="text-2xl font-bold text-white mb-6">User Management</h2>
+                        <div class="space-y-4">
+                            <button class="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-3 rounded-lg font-semibold transition-all">Manage Users</button>
+                            <button class="w-full bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-lg font-semibold transition-all">View Reports</button>
+                            <button class="w-full bg-purple-500 hover:bg-purple-600 text-white px-4 py-3 rounded-lg font-semibold transition-all">System Settings</button>
+                        </div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
+                        <h2 class="text-2xl font-bold text-white mb-6">Platform Analytics</h2>
+                        <div class="space-y-4">
+                            <div class="flex justify-between text-white">
+                                <span>Server Uptime</span>
+                                <span class="text-green-400">99.9%</span>
+                            </div>
+                            <div class="flex justify-between text-white">
+                                <span>Response Time</span>
+                                <span class="text-blue-400">< 200ms</span>
+                            </div>
+                            <div class="flex justify-between text-white">
+                                <span>User Satisfaction</span>
+                                <span class="text-purple-400">4.8/5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Preview -->
+    <div id="featuresPreview" class="relative z-10 py-20 px-4">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-black text-white text-center mb-16">Why We're Winning Hackathons 🏆</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Student Features -->
+                <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
+                    <div class="w-12 h-12 bg-gradient-to-r from-blue-400 to-purple-500 rounded-xl flex items-center justify-center mb-4">
+                        <span class="text-2xl">🎓</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">For Students</h3>
+                    <ul class="text-blue-200 space-y-2 text-sm">
+                        <li>• AI-powered skill gap analysis</li>
+                        <li>• Automated project documentation</li>
+                        <li>• Career pathway recommendations</li>
+                        <li>• Industry mentor matching</li>
+                        <li>• Real-time portfolio optimization</li>
+                    </ul>
+                </div>
+
+                <!-- Faculty Features -->
+                <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
+                    <div class="w-12 h-12 bg-gradient-to-r from-green-400 to-blue-500 rounded-xl flex items-center justify-center mb-4">
+                        <span class="text-2xl">👨‍🏫</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">For Faculty</h3>
+                    <ul class="text-blue-200 space-y-2 text-sm">
+                        <li>• Bulk student progress tracking</li>
+                        <li>• Automated assessment tools</li>
+                        <li>• Industry collaboration insights</li>
+                        <li>• Research publication management</li>
+                        <li>• Student mentorship analytics</li>
+                    </ul>
+                </div>
+
+                <!-- Innovation Features -->
+                <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
+                    <div class="w-12 h-12 bg-gradient-to-r from-pink-400 to-red-500 rounded-xl flex items-center justify-center mb-4">
+                        <span class="text-2xl">🚀</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Innovation Edge</h3>
+                    <ul class="text-blue-200 space-y-2 text-sm">
+                        <li>• Blockchain-verified certificates</li>
+                        <li>• AR/VR portfolio presentations</li>
+                        <li>• Global employer network</li>
+                        <li>• Predictive career analytics</li>
+                        <li>• Social impact measurement</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Add Project Modal -->
+    <div id="addProjectModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white/10 backdrop-blur-xl rounded-2xl p-6 max-w-md w-full border border-white/20">
+            <h3 class="text-2xl font-bold text-white mb-4">Add New Project</h3>
+            <form id="addProjectForm" class="space-y-4">
+                <input type="text" id="projectTitle" placeholder="Project Title" class="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/70" required>
+                <textarea id="projectDescription" placeholder="Project Description" rows="3" class="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/70" required></textarea>
+                <select id="projectCategory" class="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg text-white" required>
+                    <option value="" class="text-gray-800">Select Category</option>
+                    <option value="web" class="text-gray-800">Web Development</option>
+                    <option value="mobile" class="text-gray-800">Mobile App</option>
+                    <option value="ai" class="text-gray-800">AI/ML</option>
+                    <option value="design" class="text-gray-800">Design</option>
+                    <option value="other" class="text-gray-800">Other</option>
+                </select>
+                <div class="flex space-x-4">
+                    <button type="submit" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-semibold transition-all">Add Project</button>
+                    <button type="button" id="cancelAddProject" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white py-3 rounded-lg font-semibold transition-all">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Global State Management
+        const AppState = {
+            currentUser: null,
+            currentView: 'auth',
+            users: [],
+            projects: [],
+            skills: [],
+            mentors: [],
+            assessments: []
+        };
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        function initializeApp() {
+            // Load data from localStorage
+            loadAppData();
+            
+            // Setup event listeners
+            setupEventListeners();
+            
+            // Check for existing session
+            checkExistingSession();
+            
+            // Initialize UI
+            showAuthView();
+            
+            // Start dynamic effects
+            startDynamicEffects();
+        }
+
+        function loadAppData() {
+            // Load users
+            AppState.users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            // Initialize with demo data if empty
+            if (AppState.users.length === 0) {
+                initializeDemoData();
+            }
+            
+            // Load other data
+            AppState.projects = JSON.parse(localStorage.getItem('projects') || '[]');
+            AppState.skills = JSON.parse(localStorage.getItem('skills') || '[]');
+            AppState.mentors = JSON.parse(localStorage.getItem('mentors') || '[]');
+            AppState.assessments = JSON.parse(localStorage.getItem('assessments') || '[]');
+        }
+
+        function initializeDemoData() {
+            const demoUsers = [
+                {
+                    id: 1,
+                    fullName: 'Alex Johnson',
+                    email: 'student@test.com',
+                    role: 'student',
+                    password: 'password123',
+                    createdAt: new Date().toISOString(),
+                    profileComplete: true,
+                    lastLogin: null,
+                    portfolioItems: 12,
+                    skillsAssessed: 8,
+                    mentorConnections: 2,
+                    portfolioScore: 85
+                },
+                {
+                    id: 2,
+                    fullName: 'Dr. Sarah Mitchell',
+                    email: 'faculty@test.com',
+                    role: 'faculty',
+                    password: 'password123',
+                    createdAt: new Date().toISOString(),
+                    profileComplete: true,
+                    lastLogin: null,
+                    studentsManaged: 45,
+                    assessmentsCreated: 15,
+                    researchPublications: 8,
+                    industryCollaborations: 12
+                },
+                {
+                    id: 3,
+                    fullName: 'Michael Chen',
+                    email: 'admin@test.com',
+                    role: 'admin',
+                    password: 'password123',
+                    createdAt: new Date().toISOString(),
+                    profileComplete: true,
+                    lastLogin: null
+                }
+            ];
+
+            const demoProjects = [
+                { id: 1, userId: 1, title: 'E-commerce Website', description: 'Full-stack web application with React and Node.js', category: 'web', createdAt: new Date().toISOString() },
+                { id: 2, userId: 1, title: 'Mobile Fitness App', description: 'React Native app for fitness tracking', category: 'mobile', createdAt: new Date().toISOString() },
+                { id: 3, userId: 1, title: 'AI Chatbot', description: 'Natural language processing chatbot', category: 'ai', createdAt: new Date().toISOString() }
+            ];
+
+            const demoSkills = [
+                { id: 1, userId: 1, name: 'JavaScript', level: 85, category: 'Programming' },
+                { id: 2, userId: 1, name: 'React', level: 80, category: 'Frontend' },
+                { id: 3, userId: 1, name: 'Node.js', level: 75, category: 'Backend' },
+                { id: 4, userId: 1, name: 'Python', level: 70, category: 'Programming' }
+            ];
+
+            const demoMentors = [
+                { id: 1, name: 'Dr. Sarah Mitchell', expertise: 'Web Development', rating: 4.9, students: 45 },
+                { id: 2, name: 'Prof. John Davis', expertise: 'AI/ML', rating: 4.8, students: 32 }
+            ];
+
+            AppState.users = demoUsers;
+            AppState.projects = demoProjects;
+            AppState.skills = demoSkills;
+            AppState.mentors = demoMentors;
+
+            // Save to localStorage
+            localStorage.setItem('users', JSON.stringify(demoUsers));
+            localStorage.setItem('projects', JSON.stringify(demoProjects));
+            localStorage.setItem('skills', JSON.stringify(demoSkills));
+            localStorage.setItem('mentors', JSON.stringify(demoMentors));
+        }
+
+        function setupEventListeners() {
+            // Navigation
+            document.getElementById('showLogin').addEventListener('click', showLogin);
+            document.getElementById('showSignup').addEventListener('click', showSignup);
+            document.getElementById('switchToLogin').addEventListener('click', showLogin);
+            document.getElementById('switchToSignup').addEventListener('click', showSignup);
+            document.getElementById('logoutBtn').addEventListener('click', logout);
+
+            // Password toggles
+            setupPasswordToggle('toggleSignupPassword', 'signupPassword', 'signupEyeOpen', 'signupEyeClosed');
+            setupPasswordToggle('toggleConfirmPassword', 'confirmPassword', 'confirmEyeOpen', 'confirmEyeClosed');
+            setupPasswordToggle('toggleLoginPassword', 'loginPassword', 'loginEyeOpen', 'loginEyeClosed');
+
+            // Password strength
+            document.getElementById('signupPassword').addEventListener('input', checkPasswordStrength);
+
+            // Forms
+            document.getElementById('signup').addEventListener('submit', handleSignup);
+            document.getElementById('login').addEventListener('submit', handleLogin);
+            document.getElementById('forgotPassword').addEventListener('click', handleForgotPassword);
+
+            // Dashboard buttons
+            setupDashboardEventListeners();
+
+            // Modal events
+            setupModalEventListeners();
+        }
+
+        function setupDashboardEventListeners() {
+            // Student dashboard buttons
+            const addProjectBtn = document.getElementById('addProjectBtn');
+            if (addProjectBtn) {
+                addProjectBtn.addEventListener('click', () => showModal('addProjectModal'));
+            }
+
+            const assessSkillsBtn = document.getElementById('assessSkillsBtn');
+            if (assessSkillsBtn) {
+                assessSkillsBtn.addEventListener('click', handleSkillAssessment);
+            }
+
+            const findMentorBtn = document.getElementById('findMentorBtn');
+            if (findMentorBtn) {
+                findMentorBtn.addEventListener('click', handleFindMentor);
+            }
+
+            // Faculty dashboard buttons
+            const viewAllStudentsBtn = document.getElementById('viewAllStudentsBtn');
+            if (viewAllStudentsBtn) {
+                viewAllStudentsBtn.addEventListener('click', handleViewAllStudents);
+            }
+
+            const createAssessmentBtn = document.getElementById('createAssessmentBtn');
+            if (createAssessmentBtn) {
+                createAssessmentBtn.addEventListener('click', handleCreateAssessment);
+            }
+
+            const connectIndustryBtn = document.getElementById('connectIndustryBtn');
+            if (connectIndustryBtn) {
+                connectIndustryBtn.addEventListener('click', handleConnectIndustry);
+            }
+
+            const addResearchBtn = document.getElementById('addResearchBtn');
+            if (addResearchBtn) {
+                addResearchBtn.addEventListener('click', handleAddResearch);
+            }
+        }
+
+        function setupModalEventListeners() {
+            // Add Project Modal
+            const addProjectForm = document.getElementById('addProjectForm');
+            if (addProjectForm) {
+                addProjectForm.addEventListener('submit', handleAddProject);
+            }
+
+            const cancelAddProject = document.getElementById('cancelAddProject');
+            if (cancelAddProject) {
+                cancelAddProject.addEventListener('click', () => hideModal('addProjectModal'));
+            }
+        }
+
+        function checkExistingSession() {
+            const sessionData = localStorage.getItem('userSession') || sessionStorage.getItem('userSession');
+            if (sessionData) {
+                try {
+                    const session = JSON.parse(sessionData);
+                    const user = AppState.users.find(u => u.id === session.userId);
+                    if (user) {
+                        AppState.currentUser = user;
+                        showDashboard(user.role);
+                        return;
+                    }
+                } catch (e) {
+                    console.error('Invalid session data');
+                }
+            }
+        }
+
+        // Authentication Functions
+        function showLogin() {
+            document.getElementById('heroSection').style.display = 'none';
+            document.getElementById('featuresPreview').style.display = 'none';
+            document.getElementById('signupForm').classList.add('hidden');
+            document.getElementById('loginForm').classList.remove('hidden');
+            clearErrors();
+        }
+
+        function showSignup() {
+            document.getElementById('heroSection').style.display = 'block';
+            document.getElementById('featuresPreview').style.display = 'block';
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('signupForm').classList.remove('hidden');
+            clearErrors();
+        }
+
+        function showAuthView() {
+            // Show auth sections
+            document.getElementById('authContainer').classList.remove('hidden');
+            document.getElementById('heroSection').style.display = 'block';
+            document.getElementById('featuresPreview').style.display = 'block';
+            document.getElementById('successTicker').style.display = 'block';
+            
+            // Hide dashboard
+            document.getElementById('dashboardContainer').classList.add('hidden');
+            document.getElementById('logoutBtn').classList.add('hidden');
+            document.getElementById('showLogin').classList.remove('hidden');
+            document.getElementById('showSignup').classList.remove('hidden');
+            AppState.currentView = 'auth';
+        }
+
+        function showDashboard(role) {
+            // Hide auth sections
+            document.getElementById('authContainer').classList.add('hidden');
+            document.getElementById('heroSection').style.display = 'none';
+            document.getElementById('featuresPreview').style.display = 'none';
+            document.getElementById('successTicker').style.display = 'none';
+            
+            // Show dashboard
+            document.getElementById('dashboardContainer').classList.remove('hidden');
+            document.getElementById('logoutBtn').classList.remove('hidden');
+            document.getElementById('showLogin').classList.add('hidden');
+            document.getElementById('showSignup').classList.add('hidden');
+
+            // Hide all dashboards first
+            document.getElementById('studentDashboard').classList.add('hidden');
+            document.getElementById('facultyDashboard').classList.add('hidden');
+            document.getElementById('adminDashboard').classList.add('hidden');
+
+            // Show appropriate dashboard and load data
+            if (role === 'student') {
+                document.getElementById('studentDashboard').classList.remove('hidden');
+                setTimeout(() => loadStudentDashboard(), 100);
+            } else if (role === 'faculty') {
+                document.getElementById('facultyDashboard').classList.remove('hidden');
+                setTimeout(() => loadFacultyDashboard(), 100);
+            } else if (role === 'admin') {
+                document.getElementById('adminDashboard').classList.remove('hidden');
+                setTimeout(() => loadAdminDashboard(), 100);
+            }
+
+            AppState.currentView = 'dashboard';
+        }
+
+        function logout() {
+            localStorage.removeItem('userSession');
+            sessionStorage.removeItem('userSession');
+            AppState.currentUser = null;
+            showAuthView();
+            showSignup();
+            showToast('👋 Logged out successfully! Welcome back to the revolution!', 'success');
+        }
+
+        // Password Functions
+        function setupPasswordToggle(toggleId, inputId, eyeOpenId, eyeClosedId) {
+            const toggle = document.getElementById(toggleId);
+            const input = document.getElementById(inputId);
+            const eyeOpen = document.getElementById(eyeOpenId);
+            const eyeClosed = document.getElementById(eyeClosedId);
+
+            if (toggle && input && eyeOpen && eyeClosed) {
+                toggle.addEventListener('click', function() {
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        eyeOpen.classList.add('hidden');
+                        eyeClosed.classList.remove('hidden');
+                    } else {
+                        input.type = 'password';
+                        eyeOpen.classList.remove('hidden');
+                        eyeClosed.classList.add('hidden');
+                    }
+                });
+            }
+        }
+
+        function checkPasswordStrength() {
+            const password = document.getElementById('signupPassword').value;
+            const strengthDiv = document.getElementById('passwordStrength');
+            const strengthText = document.getElementById('passwordStrengthText');
+            const strengthBars = strengthDiv.querySelectorAll('div div');
+
+            if (password.length === 0) {
+                strengthDiv.classList.add('hidden');
+                return;
+            }
+
+            strengthDiv.classList.remove('hidden');
+            let strength = 0;
+
+            if (password.length >= 8) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+            strengthBars.forEach((bar, index) => {
+                if (index < strength) {
+                    if (strength <= 2) bar.className = 'h-2 w-1/4 rounded-full bg-red-400';
+                    else if (strength <= 3) bar.className = 'h-2 w-1/4 rounded-full bg-yellow-400';
+                    else bar.className = 'h-2 w-1/4 rounded-full bg-green-400';
+                } else {
+                    bar.className = 'h-2 w-1/4 rounded-full bg-white/20';
+                }
+            });
+
+            const feedback = strength <= 2 ? 'Weak password' : strength <= 3 ? 'Good password' : 'Strong password!';
+            strengthText.textContent = feedback;
+        }
+
+        // Form Handlers
+        function handleSignup(e) {
+            e.preventDefault();
+            clearErrors();
+
+            const formData = new FormData(e.target);
+            const data = {
+                fullName: formData.get('fullName').trim(),
+                email: formData.get('email').trim(),
+                role: formData.get('role'),
+                password: formData.get('password'),
+                confirmPassword: formData.get('confirmPassword')
+            };
+
+            if (validateSignupData(data)) {
+                const newUser = createUser(data);
+                AppState.users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(AppState.users));
+
+                // Auto-login the new user
+                AppState.currentUser = newUser;
+                const sessionData = {
+                    userId: newUser.id,
+                    email: newUser.email,
+                    fullName: newUser.fullName,
+                    role: newUser.role,
+                    loginTime: new Date().toISOString(),
+                    rememberMe: true
+                };
+                localStorage.setItem('userSession', JSON.stringify(sessionData));
+
+                const roleMessage = getRoleWelcomeMessage(data.role);
+                showToast(`🚀 Account created! ${roleMessage}`, 'success');
+                
+                document.getElementById('signup').reset();
+                document.getElementById('passwordStrength').classList.add('hidden');
+                
+                setTimeout(() => {
+                    showDashboard(newUser.role);
+                }, 2000);
+            }
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            clearErrors();
+
+            const formData = new FormData(e.target);
+            const email = formData.get('email').trim();
+            const password = formData.get('password');
+            const rememberMe = formData.get('rememberMe');
+
+            if (validateLoginData(email, password)) {
+                const user = AppState.users.find(u => u.email === email);
+                
+                if (!user) {
+                    showError('loginEmailError', 'Email not found. Ready to join the revolution?');
+                    return;
+                }
+
+                if (user.password !== password) {
+                    showError('loginPasswordError', 'Incorrect password. Try again!');
+                    return;
+                }
+
+                // Successful login
+                loginUser(user, rememberMe);
+            }
+        }
+
+        function handleForgotPassword() {
+            showToast('🔐 Password reset feature coming soon! For demo, use: password123', 'info');
+        }
+
+        // Validation Functions
+        function validateSignupData(data) {
+            let isValid = true;
+
+            if (!data.fullName || data.fullName.length < 2) {
+                showError('fullNameError', 'Please enter your full name (minimum 2 characters)');
+                isValid = false;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!data.email) {
+                showError('signupEmailError', 'Email is required');
+                isValid = false;
+            } else if (!emailRegex.test(data.email)) {
+                showError('signupEmailError', 'Please enter a valid email address');
+                isValid = false;
+            } else if (AppState.users.find(user => user.email === data.email)) {
+                showError('signupEmailError', 'This email is already registered. Try logging in!');
+                isValid = false;
+            }
+
+            if (!data.role) {
+                showError('roleError', 'Please select your role to continue');
+                isValid = false;
+            }
+
+            if (!data.password) {
+                showError('signupPasswordError', 'Password is required');
+                isValid = false;
+            } else if (data.password.length < 6) {
+                showError('signupPasswordError', 'Password must be at least 6 characters long');
+                isValid = false;
+            }
+
+            if (!data.confirmPassword) {
+                showError('confirmPasswordError', 'Please confirm your password');
+                isValid = false;
+            } else if (data.password !== data.confirmPassword) {
+                showError('confirmPasswordError', 'Passwords do not match');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function validateLoginData(email, password) {
+            let isValid = true;
+
+            if (!email) {
+                showError('loginEmailError', 'Email is required');
+                isValid = false;
+            }
+
+            if (!password) {
+                showError('loginPasswordError', 'Password is required');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        // User Management
+        function createUser(data) {
+            return {
+                id: Date.now(),
+                fullName: data.fullName,
+                email: data.email,
+                role: data.role,
+                password: data.password,
+                createdAt: new Date().toISOString(),
+                profileComplete: false,
+                lastLogin: null,
+                portfolioItems: 0,
+                skillsAssessed: 0,
+                mentorConnections: 0,
+                portfolioScore: 0
+            };
+        }
+
+        function loginUser(user, rememberMe) {
+            user.lastLogin = new Date().toISOString();
+            localStorage.setItem('users', JSON.stringify(AppState.users));
+
+            const sessionData = {
+                userId: user.id,
+                email: user.email,
+                fullName: user.fullName,
+                role: user.role,
+                loginTime: new Date().toISOString(),
+                rememberMe: !!rememberMe
+            };
+
+            if (rememberMe) {
+                localStorage.setItem('userSession', JSON.stringify(sessionData));
+            } else {
+                sessionStorage.setItem('userSession', JSON.stringify(sessionData));
+            }
+
+            AppState.currentUser = user;
+            const welcomeMessage = `Welcome back, ${user.fullName}!`;
+            showToast(`🎉 ${welcomeMessage}`, 'success');
+            
+            setTimeout(() => {
+                showDashboard(user.role);
+            }, 1500);
+        }
+
+        // Dashboard Loading Functions
+        function loadStudentDashboard() {
+            const user = AppState.currentUser;
+            document.getElementById('studentWelcome').textContent = `Welcome back, ${user.fullName}!`;
+            document.getElementById('studentProjects').textContent = user.portfolioItems || 12;
+            document.getElementById('studentSkills').textContent = user.skillsAssessed || 8;
+            document.getElementById('studentMentors').textContent = user.mentorConnections || 2;
+            document.getElementById('studentAchievements').textContent = '5';
+
+            loadStudentProjects();
+            loadStudentSkills();
+            loadStudentMentors();
+            loadAIRecommendations();
+        }
+
+        function loadFacultyDashboard() {
+            const user = AppState.currentUser;
+            document.getElementById('facultyWelcome').textContent = `Welcome back, Professor ${user.fullName}!`;
+            document.getElementById('facultyStudents').textContent = user.studentsManaged || 45;
+            document.getElementById('facultyAssessments').textContent = user.assessmentsCreated || 15;
+            document.getElementById('facultyResearch').textContent = user.researchPublications || 8;
+            document.getElementById('facultyCollabs').textContent = user.industryCollaborations || 12;
+
+            loadStudentProgress();
+            loadFacultyAssessments();
+            loadIndustryPartners();
+            loadResearchPublications();
+        }
+
+        function loadAdminDashboard() {
+            const user = AppState.currentUser;
+            document.getElementById('adminWelcome').textContent = `Welcome back, ${user.fullName}!`;
+            // Admin dashboard is mostly static for demo
+        }
+
+        // Student Dashboard Functions
+        function loadStudentProjects() {
+            const projectsList = document.getElementById('projectsList');
+            const userProjects = AppState.projects.filter(p => p.userId === AppState.currentUser.id);
+            
+            if (userProjects.length === 0) {
+                projectsList.innerHTML = `
+                    <div class="text-center py-8">
+                        <div class="text-6xl mb-4">📁</div>
+                        <p class="text-white/70 mb-4">No projects yet. Add your first project!</p>
+                        <button onclick="showModal('addProjectModal')" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition-all">
+                            🚀 Create First Project
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            projectsList.innerHTML = userProjects.map(project => `
+                <div class="bg-white/10 rounded-lg p-4 border border-white/20 hover:bg-white/20 transition-all">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-white font-semibold">${project.title}</h3>
+                        <span class="text-xs bg-blue-500 text-white px-2 py-1 rounded capitalize">${project.category}</span>
+                    </div>
+                    <p class="text-white/70 text-sm mb-3">${project.description}</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs text-white/50">📅 ${new Date(project.createdAt).toLocaleDateString()}</span>
+                        <div class="flex space-x-2">
+                            <button onclick="editProject(${project.id})" class="text-blue-400 hover:text-blue-300 text-sm font-medium">✏️ Edit</button>
+                            <button onclick="deleteProject(${project.id})" class="text-red-400 hover:text-red-300 text-sm font-medium">🗑️ Delete</button>
+                            <button onclick="shareProject(${project.id})" class="text-green-400 hover:text-green-300 text-sm font-medium">📤 Share</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadStudentSkills() {
+            const skillsChart = document.getElementById('skillsChart');
+            const userSkills = AppState.skills.filter(s => s.userId === AppState.currentUser.id);
+            
+            if (userSkills.length === 0) {
+                skillsChart.innerHTML = '<p class="text-white/70">No skills assessed yet. Take your first assessment!</p>';
+                return;
+            }
+
+            skillsChart.innerHTML = userSkills.map(skill => `
+                <div class="flex items-center justify-between">
+                    <span class="text-white font-medium">${skill.name}</span>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-24 bg-white/20 rounded-full h-2">
+                            <div class="bg-gradient-to-r from-blue-400 to-purple-500 h-2 rounded-full" style="width: ${skill.level}%"></div>
+                        </div>
+                        <span class="text-white/70 text-sm">${skill.level}%</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadStudentMentors() {
+            const mentorsList = document.getElementById('mentorsList');
+            
+            mentorsList.innerHTML = AppState.mentors.slice(0, 2).map(mentor => `
+                <div class="bg-white/10 rounded-lg p-3 border border-white/20">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="text-white font-medium text-sm">${mentor.name}</h4>
+                            <p class="text-white/70 text-xs">${mentor.expertise}</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-yellow-400 text-xs">⭐ ${mentor.rating}</div>
+                            <div class="text-white/50 text-xs">${mentor.students} students</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadAIRecommendations() {
+            const recommendations = [
+                '🎯 Complete your React.js certification',
+                '📚 Add more backend projects to your portfolio',
+                '🤝 Connect with industry professionals',
+                '📈 Improve your data structures knowledge'
+            ];
+
+            document.getElementById('aiRecommendations').innerHTML = recommendations.map(rec => `
+                <div class="bg-white/10 rounded-lg p-3 border border-white/20">
+                    <p class="text-white/80 text-sm">${rec}</p>
+                </div>
+            `).join('');
+        }
+
+        // Faculty Dashboard Functions
+        function loadStudentProgress() {
+            const progressList = document.getElementById('studentProgressList');
+            const sampleStudents = [
+                { name: 'Alex Johnson', progress: 85, projects: 12, lastActive: '2 hours ago' },
+                { name: 'Emma Davis', progress: 92, projects: 15, lastActive: '1 day ago' },
+                { name: 'Michael Brown', progress: 78, projects: 9, lastActive: '3 hours ago' }
+            ];
+
+            progressList.innerHTML = sampleStudents.map(student => `
+                <div class="bg-white/10 rounded-lg p-4 border border-white/20">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-white font-semibold">${student.name}</h3>
+                        <span class="text-xs text-white/50">${student.lastActive}</span>
+                    </div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-white/70 text-sm">Portfolio Progress</span>
+                        <span class="text-white font-medium">${student.progress}%</span>
+                    </div>
+                    <div class="w-full bg-white/20 rounded-full h-2 mb-2">
+                        <div class="bg-gradient-to-r from-green-400 to-blue-500 h-2 rounded-full" style="width: ${student.progress}%"></div>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-white/70">${student.projects} projects</span>
+                        <button class="text-blue-400 hover:text-blue-300">View Details</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadFacultyAssessments() {
+            const assessmentsList = document.getElementById('assessmentsList');
+            const sampleAssessments = [
+                { title: 'Web Development Quiz', students: 32, completed: 28, dueDate: '2024-01-15' },
+                { title: 'React Project Review', students: 25, completed: 20, dueDate: '2024-01-20' },
+                { title: 'Database Design Assignment', students: 30, completed: 25, dueDate: '2024-01-25' }
+            ];
+
+            assessmentsList.innerHTML = sampleAssessments.map(assessment => `
+                <div class="bg-white/10 rounded-lg p-4 border border-white/20">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-white font-semibold">${assessment.title}</h3>
+                        <span class="text-xs bg-green-500 text-white px-2 py-1 rounded">Active</span>
+                    </div>
+                    <div class="flex justify-between text-sm text-white/70 mb-2">
+                        <span>Due: ${new Date(assessment.dueDate).toLocaleDateString()}</span>
+                        <span>${assessment.completed}/${assessment.students} completed</span>
+                    </div>
+                    <div class="w-full bg-white/20 rounded-full h-2 mb-2">
+                        <div class="bg-gradient-to-r from-blue-400 to-purple-500 h-2 rounded-full" style="width: ${(assessment.completed/assessment.students)*100}%"></div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="text-blue-400 hover:text-blue-300 text-sm">View Results</button>
+                        <button class="text-green-400 hover:text-green-300 text-sm">Edit</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadIndustryPartners() {
+            const partners = [
+                { name: 'TechCorp Inc.', type: 'Internships', active: true },
+                { name: 'StartupXYZ', type: 'Projects', active: true },
+                { name: 'DataSoft Ltd.', type: 'Mentorship', active: false }
+            ];
+
+            document.getElementById('industryPartners').innerHTML = partners.map(partner => `
+                <div class="bg-white/10 rounded-lg p-3 border border-white/20">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="text-white font-medium text-sm">${partner.name}</h4>
+                            <p class="text-white/70 text-xs">${partner.type}</p>
+                        </div>
+                        <div class="w-2 h-2 rounded-full ${partner.active ? 'bg-green-400' : 'bg-red-400'}"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadResearchPublications() {
+            const research = [
+                { title: 'AI in Education', journal: 'EdTech Review', year: 2024 },
+                { title: 'Digital Portfolios Impact', journal: 'Learning Analytics', year: 2023 },
+                { title: 'Student Engagement Metrics', journal: 'Education Today', year: 2023 }
+            ];
+
+            document.getElementById('researchList').innerHTML = research.map(paper => `
+                <div class="bg-white/10 rounded-lg p-3 border border-white/20">
+                    <h4 class="text-white font-medium text-sm">${paper.title}</h4>
+                    <p class="text-white/70 text-xs">${paper.journal} (${paper.year})</p>
+                </div>
+            `).join('');
+        }
+
+        // Dashboard Action Handlers
+        function handleAddProject(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const editingId = e.target.dataset.editingId;
+            
+            if (editingId) {
+                // Update existing project
+                const projectIndex = AppState.projects.findIndex(p => p.id === parseInt(editingId));
+                if (projectIndex !== -1) {
+                    AppState.projects[projectIndex] = {
+                        ...AppState.projects[projectIndex],
+                        title: formData.get('projectTitle'),
+                        description: formData.get('projectDescription'),
+                        category: formData.get('projectCategory'),
+                        updatedAt: new Date().toISOString()
+                    };
+                    showToast('✅ Project updated successfully!', 'success');
+                }
+                
+                // Reset form state
+                delete e.target.dataset.editingId;
+                document.querySelector('#addProjectModal h3').textContent = 'Add New Project';
+                document.querySelector('#addProjectForm button[type="submit"]').textContent = 'Add Project';
+            } else {
+                // Add new project
+                const newProject = {
+                    id: Date.now(),
+                    userId: AppState.currentUser.id,
+                    title: formData.get('projectTitle'),
+                    description: formData.get('projectDescription'),
+                    category: formData.get('projectCategory'),
+                    createdAt: new Date().toISOString()
+                };
+
+                AppState.projects.push(newProject);
+                
+                // Update user's portfolio count
+                AppState.currentUser.portfolioItems = (AppState.currentUser.portfolioItems || 0) + 1;
+                const userIndex = AppState.users.findIndex(u => u.id === AppState.currentUser.id);
+                AppState.users[userIndex] = AppState.currentUser;
+                localStorage.setItem('users', JSON.stringify(AppState.users));
+                document.getElementById('studentProjects').textContent = AppState.currentUser.portfolioItems;
+                
+                showToast('🎉 Project added successfully!', 'success');
+            }
+
+            localStorage.setItem('projects', JSON.stringify(AppState.projects));
+            hideModal('addProjectModal');
+            loadStudentProjects();
+            
+            // Reset form
+            e.target.reset();
+        }
+
+        function handleSkillAssessment() {
+            showToast('🎯 Starting AI-powered skill assessment...', 'info');
+            
+            // Simulate realistic assessment process
+            setTimeout(() => {
+                const skillCategories = {
+                    'Programming': ['JavaScript', 'Python', 'Java', 'C++', 'TypeScript', 'Go', 'Rust'],
+                    'Frontend': ['React', 'Vue.js', 'Angular', 'HTML/CSS', 'Tailwind CSS', 'Bootstrap'],
+                    'Backend': ['Node.js', 'Express.js', 'Django', 'Flask', 'Spring Boot', 'FastAPI'],
+                    'Database': ['SQL', 'MongoDB', 'PostgreSQL', 'MySQL', 'Redis', 'Firebase'],
+                    'DevOps': ['Docker', 'Kubernetes', 'AWS', 'Git', 'CI/CD', 'Linux'],
+                    'Design': ['UI/UX Design', 'Figma', 'Adobe XD', 'Photoshop', 'Illustrator']
+                };
+                
+                const categories = Object.keys(skillCategories);
+                const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+                const skills = skillCategories[randomCategory];
+                const randomSkill = skills[Math.floor(Math.random() * skills.length)];
+                const randomLevel = Math.floor(Math.random() * 40) + 60; // 60-100%
+                
+                // Check if skill already exists
+                const existingSkillIndex = AppState.skills.findIndex(s => 
+                    s.userId === AppState.currentUser.id && s.name === randomSkill
+                );
+                
+                if (existingSkillIndex !== -1) {
+                    // Update existing skill
+                    AppState.skills[existingSkillIndex].level = Math.max(
+                        AppState.skills[existingSkillIndex].level, 
+                        randomLevel
+                    );
+                    showToast(`📈 ${randomSkill} skill improved! New level: ${AppState.skills[existingSkillIndex].level}%`, 'success');
+                } else {
+                    // Add new skill
+                    const newSkill = {
+                        id: Date.now(),
+                        userId: AppState.currentUser.id,
+                        name: randomSkill,
+                        level: randomLevel,
+                        category: randomCategory
+                    };
+
+                    AppState.skills.push(newSkill);
+                    
+                    // Update user's skills count
+                    AppState.currentUser.skillsAssessed = (AppState.currentUser.skillsAssessed || 0) + 1;
+                    const userIndex = AppState.users.findIndex(u => u.id === AppState.currentUser.id);
+                    AppState.users[userIndex] = AppState.currentUser;
+                    localStorage.setItem('users', JSON.stringify(AppState.users));
+                    document.getElementById('studentSkills').textContent = AppState.currentUser.skillsAssessed;
+                    
+                    showToast(`✅ ${randomSkill} assessment completed! Score: ${randomLevel}%`, 'success');
+                }
+
+                localStorage.setItem('skills', JSON.stringify(AppState.skills));
+                loadStudentSkills();
+                
+                // Generate AI recommendation based on new skill
+                setTimeout(() => {
+                    const recommendations = [
+                        `🎯 Great ${randomSkill} skills! Consider building a project to showcase this.`,
+                        `📚 Your ${randomSkill} knowledge is solid. Try advanced concepts next.`,
+                        `🚀 ${randomSkill} mastery unlocked! Ready for industry challenges.`,
+                        `💡 Strong ${randomSkill} foundation. Explore related technologies.`
+                    ];
+                    const randomRec = recommendations[Math.floor(Math.random() * recommendations.length)];
+                    showToast(randomRec, 'info');
+                }, 1000);
+                
+            }, 2000);
+        }
+
+        function handleFindMentor() {
+            showToast('🔍 AI is analyzing your skills and matching with mentors...', 'info');
+            
+            setTimeout(() => {
+                const availableMentors = [
+                    { id: 3, name: 'Dr. Emily Rodriguez', expertise: 'Full-Stack Development', rating: 4.9, students: 28, experience: '8 years industry + 5 years teaching' },
+                    { id: 4, name: 'Prof. James Wilson', expertise: 'Data Science & AI', rating: 4.8, students: 35, experience: '12 years research + 6 years industry' },
+                    { id: 5, name: 'Sarah Chen', expertise: 'UI/UX Design', rating: 4.9, students: 22, experience: '10 years at top design agencies' },
+                    { id: 6, name: 'Michael Kumar', expertise: 'DevOps & Cloud', rating: 4.7, students: 31, experience: '15 years enterprise solutions' },
+                    { id: 7, name: 'Dr. Lisa Thompson', expertise: 'Mobile Development', rating: 4.8, students: 26, experience: '9 years iOS/Android development' }
+                ];
+                
+                // Add new mentors to available pool
+                availableMentors.forEach(mentor => {
+                    if (!AppState.mentors.find(m => m.id === mentor.id)) {
+                        AppState.mentors.push(mentor);
+                    }
+                });
+                
+                localStorage.setItem('mentors', JSON.stringify(AppState.mentors));
+                
+                // Update user's mentor connections
+                AppState.currentUser.mentorConnections = (AppState.currentUser.mentorConnections || 0) + 1;
+                const userIndex = AppState.users.findIndex(u => u.id === AppState.currentUser.id);
+                AppState.users[userIndex] = AppState.currentUser;
+                localStorage.setItem('users', JSON.stringify(AppState.users));
+                document.getElementById('studentMentors').textContent = AppState.currentUser.mentorConnections;
+                
+                loadStudentMentors();
+                showToast('🤝 Perfect matches found! 3 expert mentors are ready to guide your journey.', 'success');
+                
+                // Follow-up notification
+                setTimeout(() => {
+                    showToast('💬 Mentors have been notified. Expect connection requests soon!', 'info');
+                }, 2000);
+                
+            }, 2500);
+        }
+
+        function handleViewAllStudents() {
+            showToast('👥 Loading comprehensive student analytics dashboard...', 'info');
+            
+            setTimeout(() => {
+                const insights = [
+                    '📊 45 students actively building portfolios',
+                    '🎯 Average portfolio completion: 78%',
+                    '🚀 12 students ready for industry placement',
+                    '📈 Skill development increased 23% this month'
+                ];
+                
+                insights.forEach((insight, index) => {
+                    setTimeout(() => {
+                        showToast(insight, 'info');
+                    }, index * 1000);
+                });
+            }, 1000);
+        }
+
+        function handleCreateAssessment() {
+            showToast('📝 Assessment creation wizard launching...', 'info');
+            
+            setTimeout(() => {
+                const assessmentTypes = [
+                    'Technical Skills Quiz',
+                    'Project-Based Assessment',
+                    'Peer Review Assignment',
+                    'Industry Simulation',
+                    'Portfolio Presentation'
+                ];
+                
+                const randomType = assessmentTypes[Math.floor(Math.random() * assessmentTypes.length)];
+                
+                // Add new assessment to faculty's count
+                AppState.currentUser.assessmentsCreated = (AppState.currentUser.assessmentsCreated || 0) + 1;
+                const userIndex = AppState.users.findIndex(u => u.id === AppState.currentUser.id);
+                AppState.users[userIndex] = AppState.currentUser;
+                localStorage.setItem('users', JSON.stringify(AppState.users));
+                document.getElementById('facultyAssessments').textContent = AppState.currentUser.assessmentsCreated;
+                
+                showToast(`✅ ${randomType} created successfully! Students will be notified.`, 'success');
+                loadFacultyAssessments();
+            }, 2000);
+        }
+
+        function handleConnectIndustry() {
+            showToast('🏢 Connecting with industry partners...', 'info');
+            
+            setTimeout(() => {
+                const companies = [
+                    'TechCorp Solutions',
+                    'InnovateAI Labs',
+                    'CloudFirst Systems',
+                    'DataDriven Analytics',
+                    'NextGen Startups'
+                ];
+                
+                const randomCompany = companies[Math.floor(Math.random() * companies.length)];
+                
+                // Update industry collaborations
+                AppState.currentUser.industryCollaborations = (AppState.currentUser.industryCollaborations || 0) + 1;
+                const userIndex = AppState.users.findIndex(u => u.id === AppState.currentUser.id);
+                AppState.users[userIndex] = AppState.currentUser;
+                localStorage.setItem('users', JSON.stringify(AppState.users));
+                document.getElementById('facultyCollabs').textContent = AppState.currentUser.industryCollaborations;
+                
+                showToast(`🤝 Partnership established with ${randomCompany}! Internship opportunities available.`, 'success');
+                loadIndustryPartners();
+            }, 1800);
+        }
+
+        function handleAddResearch() {
+            showToast('📚 Research publication form opening...', 'info');
+            
+            setTimeout(() => {
+                const researchTopics = [
+                    'AI-Enhanced Learning Analytics',
+                    'Digital Portfolio Impact on Career Outcomes',
+                    'Peer-to-Peer Learning in Tech Education',
+                    'Industry-Academia Collaboration Models',
+                    'Skill Assessment Automation'
+                ];
+                
+                const randomTopic = researchTopics[Math.floor(Math.random() * researchTopics.length)];
+                
+                // Update research publications
+                AppState.currentUser.researchPublications = (AppState.currentUser.researchPublications || 0) + 1;
+                const userIndex = AppState.users.findIndex(u => u.id === AppState.currentUser.id);
+                AppState.users[userIndex] = AppState.currentUser;
+                localStorage.setItem('users', JSON.stringify(AppState.users));
+                document.getElementById('facultyResearch').textContent = AppState.currentUser.researchPublications;
+                
+                showToast(`📖 "${randomTopic}" submitted for peer review! Impact factor expected: High.`, 'success');
+                loadResearchPublications();
+            }, 2200);
+        }
+
+        // Modal Functions
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+        }
+
+        function hideModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        // Utility Functions
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.classList.remove('hidden');
+            }
+        }
+
+        function clearErrors() {
+            const errorElements = document.querySelectorAll('[id$="Error"]');
+            errorElements.forEach(element => {
+                element.classList.add('hidden');
+                element.textContent = '';
+            });
+        }
+
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toastContainer');
+            const toastId = 'toast-' + Date.now();
+            
+            const colors = {
+                success: 'from-green-400 to-blue-500',
+                error: 'from-red-400 to-pink-500',
+                info: 'from-blue-400 to-purple-500',
+                warning: 'from-yellow-400 to-orange-500'
+            };
+
+            const icons = {
+                success: '✅',
+                error: '❌',
+                info: 'ℹ️',
+                warning: '⚠️'
+            };
+
+            const toast = document.createElement('div');
+            toast.id = toastId;
+            toast.className = 'animate-slideIn';
+            toast.innerHTML = `
+                <div class="bg-gradient-to-r ${colors[type]} text-white px-6 py-4 rounded-xl shadow-2xl border border-white/20 backdrop-blur-lg max-w-sm">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-xl">${icons[type]}</span>
+                        <p class="font-semibold">${message}</p>
+                    </div>
+                </div>
+            `;
+
+            toastContainer.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideIn 0.3s ease-out reverse';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 4000);
+        }
+
+        function getRoleWelcomeMessage(role) {
+            const messages = {
+                student: '🎓 Ready to build your digital portfolio and accelerate your career!',
+                faculty: '👨‍🏫 Ready to mentor students and track their progress!',
+                admin: '⚡ Ready to manage the platform and drive innovation!'
+            };
+            return messages[role] || 'Welcome to Smart Student Hub!';
+        }
+
+        // Project Management Functions
+        function editProject(projectId) {
+            const project = AppState.projects.find(p => p.id === projectId);
+            if (project) {
+                document.getElementById('projectTitle').value = project.title;
+                document.getElementById('projectDescription').value = project.description;
+                document.getElementById('projectCategory').value = project.category;
+                
+                // Store editing project ID
+                document.getElementById('addProjectForm').dataset.editingId = projectId;
+                document.querySelector('#addProjectModal h3').textContent = 'Edit Project';
+                document.querySelector('#addProjectForm button[type="submit"]').textContent = 'Update Project';
+                
+                showModal('addProjectModal');
+            }
+        }
+
+        function deleteProject(projectId) {
+            if (confirm('Are you sure you want to delete this project? This action cannot be undone.')) {
+                AppState.projects = AppState.projects.filter(p => p.id !== projectId);
+                localStorage.setItem('projects', JSON.stringify(AppState.projects));
+                
+                // Update user's portfolio count
+                AppState.currentUser.portfolioItems = Math.max(0, (AppState.currentUser.portfolioItems || 0) - 1);
+                const userIndex = AppState.users.findIndex(u => u.id === AppState.currentUser.id);
+                AppState.users[userIndex] = AppState.currentUser;
+                localStorage.setItem('users', JSON.stringify(AppState.users));
+                
+                loadStudentProjects();
+                document.getElementById('studentProjects').textContent = AppState.currentUser.portfolioItems;
+                showToast('🗑️ Project deleted successfully!', 'success');
+            }
+        }
+
+        function shareProject(projectId) {
+            const project = AppState.projects.find(p => p.id === projectId);
+            if (project) {
+                const shareUrl = `${window.location.origin}/project/${projectId}`;
+                if (navigator.share) {
+                    navigator.share({
+                        title: project.title,
+                        text: project.description,
+                        url: shareUrl
+                    });
+                } else {
+                    navigator.clipboard.writeText(shareUrl).then(() => {
+                        showToast('📤 Project link copied to clipboard!', 'success');
+                    });
+                }
+            }
+        }
+
+        function startDynamicEffects() {
+            // Success ticker rotation
+            const ticker = document.getElementById('successTicker');
+            const messages = [
+                '🏆 Join 50,000+ Students & 5,000+ Faculty Already Transforming Their Careers!',
+                '🚀 95% of our students land internships within 6 months!',
+                '⭐ Rated #1 Digital Portfolio Platform by 500+ Universities!',
+                '🎯 AI-powered matching connects 1000+ students with mentors monthly!',
+                '💡 Over 100,000 projects showcased and counting!'
+            ];
+
+            let messageIndex = 0;
+            setInterval(() => {
+                if (ticker && ticker.querySelector('p')) {
+                    ticker.querySelector('p').textContent = messages[messageIndex];
+                    messageIndex = (messageIndex + 1) % messages.length;
+                }
+            }, 5000);
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'983dff0875c6ff6d',t:'MTc1ODY3MTk3MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
